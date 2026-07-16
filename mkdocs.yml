@@ -27,13 +27,6 @@ theme:
 
 plugins:
   - search
-  - mkdocstrings:
-      handlers:
-        python:
-          paths: [.]
-          options:
-            show_source: true
-            show_root_heading: true
 
 nav:
   - Home: index.md

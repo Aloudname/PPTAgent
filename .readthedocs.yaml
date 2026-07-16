@@ -7,16 +7,10 @@ build:
   os: ubuntu-22.04
   tools:
     python: "3.11"
-  apt_packages:
-    - libxml2-dev
-    - libxslt1-dev
 
 mkdocs:
   configuration: mkdocs.yml
 
 python:
   install:
-    - method: pip
-      path: .
-      extra_requirements:
-        - docs
+    - requirements: docs/requirements.txt
