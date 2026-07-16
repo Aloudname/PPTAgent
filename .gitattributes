@@ -1,0 +1,29 @@
+# .gitattributes
+# end-of-line configs
+
+* text=auto eol=lf
+
+# 二进制文件
+*.pptx binary
+*.ppt binary
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.pdf binary
+*.whl binary
+*.tar.gz binary
+
+# 总是以 LF 换行
+*.py text eol=lf
+*.yaml text eol=lf
+*.yml text eol=lf
+*.json text eol=lf
+*.toml text eol=lf
+*.md text eol=lf
+*.sh text eol=lf
+*.cfg text eol=lf
+
+# 脚本文件可执行
+scripts/*.sh text eol=lf

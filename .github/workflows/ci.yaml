@@ -1,0 +1,136 @@
+# 文件位置: .github/workflows/ci.yaml
+
+name: CI
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  ENV_NAME: pptagent
+  PYTHON_VERSION: "3.11"
+
+jobs:
+  # =============================================
+  # Job 1: 代码质量检查
+  # =============================================
+  lint:
+    name: Lint & Type Check
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Miniforge (conda)
+        uses: conda-incubator/setup-miniconda@v3
+        with:
+          miniforge-version: latest
+          environment-file: environment.yml
+          activate-environment: ${{ env.ENV_NAME }}
+          python-version: ${{ env.PYTHON_VERSION }}
+          conda-remove-defaults: "false"
+
+      - name: Install project and lint tools
+        shell: bash -el {0}
+        run: |
+          pip install -e . --no-deps
+          pip install ruff black isort mypy pydantic types-pyyaml types-requests
+
+      - name: Ruff (lint)
+        shell: bash -el {0}
+        run: ruff check pptagent/ tests/
+
+      - name: Ruff (format)
+        shell: bash -el {0}
+        run: ruff format --check pptagent/ tests/
+
+      - name: Black (format)
+        shell: bash -el {0}
+        run: black --check pptagent/ tests/
+
+      - name: isort (imports)
+        shell: bash -el {0}
+        run: isort --check-only pptagent/ tests/
+
+      - name: mypy (type check)
+        shell: bash -el {0}
+        run: mypy pptagent/
+
+  # =============================================
+  # Job 2: 测试
+  # =============================================
+  test:
+    name: Test (Python ${{ matrix.python-version }})
+    runs-on: ubuntu-22.04
+    needs: lint
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.10", "3.11"]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Miniforge (conda)
+        uses: conda-incubator/setup-miniconda@v3
+        with:
+          miniforge-version: latest
+          environment-file: environment.yml
+          activate-environment: ${{ env.ENV_NAME }}
+          python-version: ${{ matrix.python-version }}
+          conda-remove-defaults: "false"
+
+      - name: Install project
+        shell: bash -el {0}
+        run: pip install -e . --no-deps
+
+      - name: Verify environment
+        shell: bash -el {0}
+        run: |
+          python --version
+          python -c "import pptagent; print(f'pptagent {pptagent.__version__} OK')"
+          python -c "import pptx; print('python-pptx OK')"
+          python -c "import cv2; print(f'OpenCV {cv2.__version__} OK')"
+
+      - name: Run tests
+        shell: bash -el {0}
+        run: |
+          pytest -v --tb=short --cov=pptagent --cov-report=term-missing --cov-report=xml:coverage.xml --timeout=60 tests/
+
+      - name: Upload coverage
+        uses: codecov/codecov-action@v4
+        with:
+          file: ./coverage.xml
+          flags: python-${{ matrix.python-version }}
+          fail_ci_if_error: false
+
+  # =============================================
+  # Job 3: 构建验证
+  # =============================================
+  build:
+    name: Build Check
+    runs-on: ubuntu-22.04
+    needs: test
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Miniforge
+        uses: conda-incubator/setup-miniconda@v3
+        with:
+          miniforge-version: latest
+          environment-file: environment.yml
+          activate-environment: ${{ env.ENV_NAME }}
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Build and check package
+        shell: bash -el {0}
+        run: |
+          pip install build twine
+          python -m build
+          twine check dist/*

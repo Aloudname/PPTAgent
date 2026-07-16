@@ -1,0 +1,17 @@
+# 开发环境覆盖配置
+
+logging:
+  level: DEBUG
+
+agent:
+  temperature: 0.3                   # 开发时稍高温度以增加多样性
+  max_execution_steps: 50            # 开发时放宽限制
+
+file_system:
+  max_file_size_mb: 50               # 开发时限制文件大小以加快迭代
+
+extraction:
+  ocr_confidence_threshold: 0.4      # 开发时降低阈值
+
+output:
+  preview_dpi: 72                    # 开发时降低DPI以加快预览

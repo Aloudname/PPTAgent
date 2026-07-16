@@ -1,0 +1,52 @@
+site_name: PPTAgent Documentation
+site_description: PPT making agent for researchers.
+site_author: Aloudname
+repo_url: https://github.com/Aloudname/PPTAgent
+
+theme:
+  name: material
+  language: en
+  palette:
+    - scheme: default
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/brightness-7
+        name: switch_dark_mode
+    - scheme: slate
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/brightness-4
+        name: switch_light_mode
+  features:
+    - navigation.sections
+    - navigation.expand
+    - search.highlight
+    - content.code.copy
+
+plugins:
+  - search
+  - mkdocstrings:
+      handlers:
+        python:
+          paths: [.]
+          options:
+            show_source: true
+            show_root_heading: true
+
+nav:
+  - content: index.md
+  - architecture:
+    - total architecture: architecture.md
+    - agentic loop: agentic_loop.md
+    - tools: tools.md
+  - guides:
+    - quick start-up: guides/getting_started.md
+    - tool dev: guides/tool_development.md
+    - adding tools: guides/adding_tools.md
+  - API references:
+    - pptagent.core: api/core.md
+    - pptagent.tools: api/tools.md
+  - architecture decisions:
+    - ADR index: decisions/index.md

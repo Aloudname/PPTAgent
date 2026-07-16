@@ -1,0 +1,224 @@
+# pyproject.toml
+# PPTAgent project
+
+[build-system]
+requires = ["setuptools>=68.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pptagent"
+version = "0.1.0"
+description = "PPT making agent for researchers."
+readme = "README.md"
+license = { text = "MIT" }
+authors = [
+    { name = "PPTAgent Team" }
+]
+keywords = ["ppt", "powerpoint", "agent", "ai", "research", "academic"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Science/Research",
+    "Intended Audience :: Education",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Topic :: Office/Business :: Office Suites",
+    "Topic :: Multimedia :: Graphics :: Presentation",
+]
+requires-python = ">=3.10"
+
+# core dependencies.
+dependencies = [
+    "python-pptx>=0.6.21",
+    "lxml>=4.9.0",
+    "Pillow>=10.0.0",
+    "olefile>=0.46",
+    "pydantic>=2.0.0",
+    "pydantic-settings>=2.0.0",
+    "pyyaml>=6.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0",
+    "pytest-cov>=5.0",
+    "pytest-mock>=3.12",
+    "pytest-asyncio>=0.23",
+    "pytest-xdist>=3.5",
+    "pytest-timeout>=2.3",
+    "black>=24.0",
+    "isort>=5.13",
+    "ruff>=0.3.0",
+    "mypy>=1.8",
+    "pre-commit>=3.6",
+    "coverage>=7.4",
+    "ipython>=8.20",
+    "ipdb>=0.13",
+]
+
+[project.urls]
+Homepage = "https://github.com/pptagent/pptagent"
+Documentation = "https://pptagent.readthedocs.io/"
+Repository = "https://github.com/pptagent/pptagent.git"
+Issues = "https://github.com/pptagent/pptagent/issues"
+
+[project.scripts]
+pptagent = "pptagent.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["pptagent*"]
+exclude = ["tests*", "docs*", "scripts*"]
+
+# black
+[tool.black]
+line-length = 100
+target-version = ["py310", "py311"]
+include = '\.pyi?$'
+extend-exclude = '''
+/(
+    \.eggs
+  | \.git
+  | \.venv
+  | build
+  | dist
+  | tests/fixtures
+)/
+'''
+
+# isort
+[tool.isort]
+profile = "black"
+line_length = 100
+known_first_party = ["pptagent"]
+known_third_party = [
+    "pptx", "lxml", "PIL", "cv2", "numpy",
+    "langchain", "langchain_anthropic", "openai",
+    "pydantic", "yaml", "chromadb", "fastapi",
+]
+sections = ["FUTURE", "STDLIB", "THIRDPARTY", "FIRSTPARTY", "LOCALFOLDER"]
+
+# Ruff
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+exclude = [
+    ".git",
+    ".venv",
+    "__pycache__",
+    "build",
+    "dist",
+    "tests/fixtures",
+]
+
+[tool.ruff.lint]
+select = [
+    "E",   # pycodestyle errors
+    "W",   # pycodestyle warnings
+    "F",   # pyflakes
+    "I",   # isort
+    "N",   # pep8-naming
+    "B",   # flake8-bugbear
+    "C4",  # flake8-comprehensions
+    "SIM", # flake8-simplify
+    "TCH", # flake8-type-checking
+    "RUF", # ruff-specific rules
+]
+ignore = [
+    "E501",   # line too long
+    "B008",   # do not perform function calls in argument defaults
+    "SIM108", # use ternary operator
+]
+fixable = ["ALL"]
+
+[tool.ruff.lint.per-file-ignores]
+"__init__.py" = ["F401"]             # allow unused imports
+"tests/**/*.py" = ["S101", "F841"]   # allow assert and unused vars.
+
+# mypy
+[tool.mypy]
+python_version = "3.10"
+warn_return_any = true
+warn_unused_configs = true
+warn_unused_ignores = true
+warn_redundant_casts = true
+strict_optional = true
+disallow_untyped_defs = true
+disallow_any_unimported = false
+no_implicit_optional = true
+check_untyped_defs = true
+warn_no_return = true
+show_error_codes = true
+exclude = [
+    "tests/",
+    "build/",
+    "dist/",
+    ".venv/",
+]
+
+[[tool.mypy.overrides]]
+module = [
+    "pptx.*",
+    "lxml.*",
+    "cv2.*",
+    "PIL.*",
+    "numpy.*",
+    "langchain.*",
+    "langchain_anthropic.*",
+    "chromadb.*",
+    "paddleocr.*",
+    "easyocr.*",
+    "latex2mathml.*",
+    "graphviz.*",
+    "gradio.*",
+    "uvicorn.*",
+    "xxhash.*",
+]
+ignore_missing_imports = true
+
+# pytest
+[tool.pytest.ini_options]
+minversion = "8.0"
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+addopts = [
+    "-v",
+    "--strict-markers",
+    "--tb=short",
+    "--cov=pptagent",
+    "--cov-report=term-missing",
+    "--cov-report=html:docs/coverage",
+    "--cov-report=xml:coverage.xml",
+]
+markers = [
+    "slow: marks tests as slow (deselect with '-m \"not slow\"')",
+    "integration: marks tests as integration tests",
+    "gpu: marks tests that require GPU",
+    "network: marks tests that require network access",
+]
+
+[tool.coverage.run]
+source = ["pptagent"]
+omit = [
+    "pptagent/__init__.py",
+    "*/tests/*",
+    "*/test_*.py",
+]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "if self.debug:",
+    "if __name__ == .__main__.:",
+    "raise AssertionError",
+    "raise NotImplementedError",
+    "if TYPE_CHECKING:",
+    "class .*\\bProtocol\\):",
+    "@(abc\\.)?abstractmethod",
+]

@@ -1,0 +1,115 @@
+# ============================================================
+# PPTAgent 默认配置
+# 此文件包含所有可配置项及默认值
+# 环境特定覆盖请使用 development.yaml / production.yaml
+# 敏感信息请使用环境变量（PPTAGENT_* 前缀）
+# ============================================================
+
+# ---- Agent 配置 ----
+agent:
+  model: claude-sonnet-4-6          # 可选: claude-opus-4-8, gpt-4o
+  temperature: 0.1                  # 0.0-2.0，低温度使输出更确定
+  max_tokens: 4096                  # 单次响应最大 token 数
+
+  # Agentic Loop 控制
+  max_replan_count: 3               # 单任务最大重新规划次数
+  max_execution_steps: 20           # 单任务最大工具调用步数
+  execution_timeout_seconds: 300    # 单任务执行超时（秒）
+  parallel_extraction: true         # 是否并行执行提取操作
+
+  # 用户确认策略
+  auto_confirm_readonly: true       # 只读操作无需确认
+  auto_confirm_single_edit: true    # 单元素编辑无需确认
+  confirm_batch_threshold: 3        # 超过此数量的编辑需确认
+  confirm_delete: true              # 删除操作需确认
+  confirm_save: true                # 保存/覆盖需确认
+  preview_before_layout: true       # 自动布局前显示预览
+
+# ---- 文件系统 ----
+file_system:
+  search_max_depth: 5               # 递归搜索最大深度
+  supported_formats:                # 支持的PPT格式
+    - .ppt
+    - .pptx
+    - .potx
+    - .ppsx
+  auto_convert_legacy: true         # 自动将 .ppt 转换为 .pptx
+  libreoffice_timeout: 60           # LibreOffice 转换超时（秒）
+  file_lock_enabled: true           # 打开文件时加锁
+  max_file_size_mb: 200             # 最大可处理的文件大小
+
+# ---- 提取 ----
+extraction:
+  ocr_engine: easyocr               # easyocr | paddleocr
+  ocr_languages:                    # OCR 语言列表
+    - en
+    - ch
+  ocr_confidence_threshold: 0.6     # OCR 置信度阈值
+  extract_image_dpi: 300            # 默认提取DPI
+  extract_image_format: png         # 默认提取格式
+  formula_engine: latex             # latex | mathml | omml
+  formula_fallback_to_ocr: true     # OMML解析失败时回退到OCR
+  chart_extract_data: true          # 是否提取图表数据
+  chart_extract_image: true         # 是否生成图表图片快照
+  lazy_load_images: true            # 懒加载图片
+  max_text_length: 100000           # 单次提取文本最大字符数
+
+# ---- 布局 ----
+layout:
+  grid_enabled: true
+  grid_size_inches: 0.25
+  snap_to_grid: true
+
+  default_margins:
+    left: 0.5
+    right: 0.5
+    top: 0.5
+    bottom: 0.5
+
+  min_element_spacing: 0.1
+  text_line_spacing: 1.15
+
+  aesthetic_weights:
+    alignment: 0.25
+    whitespace: 0.20
+    consistency: 0.20
+    golden_ratio: 0.15
+    color_harmony: 0.10
+    visual_hierarchy: 0.10
+
+# ---- 知识库 ----
+knowledge:
+  rag:
+    db_path: ./data/vector_db
+    chunk_size: 500
+    chunk_overlap: 50
+    top_k: 5
+  web_search:
+    engine: duckduckgo
+    max_results: 5
+    timeout_seconds: 10
+  template_store:
+    path: ./data/templates
+    auto_index: true
+
+# ---- 输出 ----
+output:
+  default_format: pptx
+  preview_dpi: 150
+  thumbnail_size: [320, 240]
+  export_formats:
+    - pptx
+    - pdf
+    - png
+    - jpg
+
+# ---- 日志 ----
+logging:
+  level: INFO
+  format: structured
+  output:
+    - console
+    - file
+  file_path: ./logs/pptagent.log
+  rotation: 10 MB
+  retention: 7 days
