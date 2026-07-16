@@ -1,8 +1,7 @@
 # PPTAgent
 
-面向科研工作者的智能PPT制作Agent。
+>   **[<span style="color:inherit;">Aloudname</span>](https://github.com/Aloudname)**
 
-[![CI](https://github.com/pptagent/pptagent/actions/workflows/ci.yaml/badge.svg)](https://github.com/pptagent/pptagent/actions/workflows/ci.yaml)
 [![codecov](https://codecov.io/gh/pptagent/pptagent/branch/main/graph/badge.svg)](https://codecov.io/gh/pptagent/pptagent)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
@@ -15,8 +14,8 @@ PPTAgent 是一个面向科研工作者的智能 PPT 制作 Agent，能够通过
 
 ### 前置条件
 
-- [Miniforge](https://github.com/conda-forge/miniforge) (conda 环境管理)
-- Node.js >= 18 (Mermaid CLI 渲染流程图)
+- [Miniforge](https://github.com/conda-forge/miniforge) or [Conda](https://www.anaconda.com/download)
+- [Node.js](https://nodejs.org/zh-cn/download) >= 18
 
 ### 安装
 
@@ -64,30 +63,30 @@ PPTAgent/
 │   ├── knowledge/     # RAG 检索与联网搜索
 │   └── utils/         # 通用工具
 ├── config/            # 配置文件
-├── tests/             # 测试套件
-├── scripts/           # 辅助脚本
-├── docs/              # 文档
-└── environment.yml    # Conda 环境描述
+├── scripts/           # 脚本
+├── tests/             # [Dev only]测试套件
+├── docs/              # [Dev only]文档
+└── environment.yml    # [Dev only]Conda 环境描述
 ```
 
 ## 开发
 
-请参阅 [CONTRIBUTING.md](./CONTRIBUTING.md) 了解贡献指南。
+请参阅 [pptagent.readthedocs.io](https://pptagent.readthedocs.io/) 了解贡献指南。
 
 ### 常用命令
 
-| 命令 | 说明 |
-|------|------|
-| `make install` | 创建/更新 conda 环境 |
-| `make test` | 运行所有测试 |
-| `make lint` | 运行代码质量检查 |
-| `make format` | 自动格式化代码 |
-| `make docs-serve` | 启动文档服务器 |
+| 命令                | 说明                 |
+| ------------------- | -------------------- |
+| `make install`    | 创建/更新 conda 环境 |
+| `make test`       | 运行所有测试         |
+| `make lint`       | 运行代码质量检查     |
+| `make format`     | 自动格式化代码       |
+| `make docs-serve` | 启动文档服务器       |
 
 ## 文档
 
-完整文档请访问: https://pptagent.readthedocs.io/
+完整文档请访问[文档页面](https://pptagent.readthedocs.io/)。
 
-## 许可证
+## 开源许可
 
-MIT License. 详见 [LICENSE](./LICENSE).
+MIT License，详见 [LICENSE](./LICENSE)。
