@@ -36,17 +36,13 @@ plugins:
             show_root_heading: true
 
 nav:
-  - content: index.md
-  - architecture:
-    - total architecture: architecture.md
-    - agentic loop: agentic_loop.md
-    - tools: tools.md
-  - guides:
-    - quick start-up: guides/getting_started.md
-    - tool dev: guides/tool_development.md
-    - adding tools: guides/adding_tools.md
-  - API references:
+  - Home: index.md
+  - Architecture & Plan:
+    - Project Plan: 0_plan.md
+    - Phase 0 - Infrastructure: 1_infra.md
+    - Phase 1 - Basic Operations: 2_basicOperations.md
+    - Phase 3 - Element Editing: 3_elementEditing.md
+    - Summary & Next Steps: 12_summary.md
+  - API Reference:
     - pptagent.core: api/core.md
     - pptagent.tools: api/tools.md
-  - architecture decisions:
-    - ADR index: decisions/index.md
