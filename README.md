@@ -1,6 +1,6 @@
 # PPTAgent
 
->   **[<span style="color:inherit;">Aloudname</span>](https://github.com/Aloudname)**
+> <img src="https://github.com/Aloudname.png?size=40" width="22" style="border-radius:50%;vertical-align:middle" alt="Aloudname"/>  **[<span style="color:inherit;">Aloudname</span>](https://github.com/Aloudname)**
 
 [![codecov](https://codecov.io/gh/pptagent/pptagent/branch/main/graph/badge.svg)](https://codecov.io/gh/pptagent/pptagent)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
