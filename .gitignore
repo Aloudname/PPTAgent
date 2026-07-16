@@ -58,8 +58,11 @@ logs/
 # test files
 tests/
 
-# Docs build
-docs/
+# Docs build artifacts (but keep source .md files tracked for RTD)
+docs/coverage/
+docs/api/
+docs/decisions/
+docs/guides/
 
 # MkDocs
 site/

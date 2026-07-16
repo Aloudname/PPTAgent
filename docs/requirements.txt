@@ -1,0 +1,5 @@
+# RTD-only: minimal dependencies for doc building
+# This avoids installing pptagent's heavy C-extension dependencies (lxml, Pillow, etc.)
+mkdocs>=1.6
+mkdocs-material>=9.5
+mkdocstrings[python]>=0.25
