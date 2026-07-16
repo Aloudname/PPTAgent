@@ -1,14 +1,9 @@
-# 文件位置: environment.yml
-# 用途: Conda 环境完整描述
-# 使用: conda env create -f environment.yml -n pptagent
-#       或者用 mamba 加速: mamba env create -f environment.yml -n pptagent
-# 更新: conda env update -f environment.yml -n pptagent --prune
-# 导出:  conda env export -n pptagent > environment-lock.yml
-#
-# 设计策略（避免 conda solving 过慢）:
-#   conda 区: 仅 C 库 + Python + 少量需要 C 编译的包（~20个）
-#   pip 区:   所有纯 Python 包（~50个）
-#   → conda solving 时间从 10min+ 降至 ~30s
+# 文environment.yml
+# 用途: Conda env description
+# Run by conda env create -f environment.yml -n pptagent
+#       or mamba env create -f environment.yml -n pptagent
+# Update: conda env update -f environment.yml -n pptagent --prune
+# Export:  conda env export -n pptagent > environment-lock.yml
 
 name: pptagent
 
@@ -17,21 +12,13 @@ channels:
   - defaults
 
 dependencies:
-  # ============================================================
-  # Layer 0: Python 本身 + 包管理器
-  # ============================================================
+
   - python=3.11.9
   - pip
 
-  # ============================================================
-  # Layer 1: 系统级 C/C++ 库（只有这些需要 conda 求解 C ABI 兼容性）
-  # ============================================================
-
-  # ---- 编译工具链 ----
   - cmake
   - pkg-config
 
-  # ---- 图像处理底层库 ----
   - libjpeg-turbo
   - libpng
   - libtiff
@@ -44,94 +31,65 @@ dependencies:
   - libxcb
   - libglib
 
-  # ---- OCR 引擎 ----
   - tesseract
   - poppler
 
-  # ---- 图表渲染 (注意: graphviz 是 LaTeX/流程图渲染的 C 依赖) ----
   - graphviz
 
-  # ---- 音视频处理 ----
   - ffmpeg
 
-  # ---- 数据库 ----
   - sqlite
 
-  # ============================================================
-  # Layer 2: 需要编译 C 扩展的 Python 包（conda 预编译最可靠）
-  #          其余纯 Python 包全部移到 pip 区
-  # ============================================================
-
-  # --- 数值计算（C/Fortran 扩展）---
   - numpy>=1.26,<2.0
   - scipy>=1.11
 
-  # --- 图像处理（C++ 扩展，conda 预编译省去编译痛苦）---
   - opencv>=4.9
   - pillow>=10.3
 
-  # --- XML 解析（C 扩展）---
   - lxml>=5.2
 
-  # ============================================================
-  # Layer 3: pip-only 包（纯 Python 或 conda 中版本过旧）
-  #          这一层 conda 不参与求解，直接由 pip 安装，速度飞快
-  # ============================================================
   - pip:
-    # ---- 数据校验 ----
     - pydantic>=2.7
     - pydantic-settings>=2.3
 
-    # ---- 文本处理 ----
     - pyyaml>=6.0
 
-    # ---- 图像处理（纯 Python 封装）----
     - imageio>=2.34
 
-    # ---- 异步与网络 ----
     - httpx>=0.27
     - tenacity>=8.3
 
-    # ---- 工具 ----
     - rich>=13.7
     - python-slugify>=8.0
     - python-dotenv>=1.0
     - xxhash>=3.4
 
-    # ---- PPT 核心操作 ----
     - python-pptx>=0.6.21
     - olefile>=0.47
 
-    # ---- Agent 框架 ----
     - langchain>=0.2.0
     - langchain-anthropic>=0.1.0
     - langchain-openai>=0.1.0
 
-    # ---- OCR（备选引擎）----
+    # OCR alternatves.
     - easyocr>=1.7
     # - paddleocr>=2.7
     # - paddlepaddle>=2.6
 
-    # ---- 文档解析 ----
     - markitdown>=0.0.1
 
-    # ---- 公式与图表 ----
     - latex2mathml>=3.77.0
     - matplotlib>=3.8
     - plotly>=5.22
 
-    # ---- RAG 与搜索 ----
     - chromadb>=0.5
     - tiktoken>=0.7
 
-    # ---- Web / API ----
     - fastapi>=0.111.0
     - "uvicorn[standard]>=0.29.0"
 
-    # ---- 演示 UI ----
     - gradio>=4.31
 
-    # ---- 测试 ----
     - pytest>=8.2
     - pytest-cov>=5.0
     - pytest-mock>=3.14
@@ -140,23 +98,19 @@ dependencies:
     - pytest-timeout>=2.3
     - coverage>=7.5
 
-    # ---- 代码质量 ----
     - black>=24.4
     - isort>=5.13
     - ruff>=0.4
     - mypy>=1.10
     - pre-commit>=3.7
 
-    # ---- 调试 ----
     - ipython>=8.24
     - ipdb>=0.13
 
-    # ---- 文档 ----
     - mkdocs>=1.6
     - mkdocs-material>=9.5
     - "mkdocstrings[python]>=0.25"
 
-    # ---- 构建 ----
     - build>=1.2
     - twine>=5.1
     - pip-tools>=7.4

@@ -58,7 +58,8 @@ logs/
 # test files
 tests/
 
-# Docs build artifacts (but keep source .md files tracked for RTD)
+# docs build artifacts
+# keep source .md files tracked for RTD
 docs/coverage/
 docs/api/
 docs/decisions/
